@@ -15,4 +15,5 @@ Here is the steps to get access to list of ebay account
   c. add a redirect url for Your auth accepted URL
     1. the url redirect will be a get method to receive the code of the user authorize
     
-3. 
+3. getUserCode() once it's called it should take the user to login of ebay followed by Grant Application Access. Once the user accept, it will take it back to the redirect url you assign to it in the application. From there
+4. 

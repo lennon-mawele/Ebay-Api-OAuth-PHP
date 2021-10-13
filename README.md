@@ -3,6 +3,11 @@ Ebay Api Get User Token
 
 
 
+Requirements 
+  - Hkonnet\LaravelEbay\Ebay
+  - DTS\eBaySDK
+
+
 
 Here is the steps to get access to list of ebay account 
 

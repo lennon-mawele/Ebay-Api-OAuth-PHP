@@ -47,6 +47,49 @@ class ebayController extends Controller
     }
 
 
+public function updateToken(Request $request)
+    {
+        $request->validate(
+            [
+                'id' => 'required',
+            ]);
+
+
+        $account = DB::table('db_name')
+            ->where('status', 'A')
+            ->where('id', $request->input('id'))->get();
+
+
+        $config = Config::get('ebay.production.credentials');
+        $authorizationEncoded = 'Basic ' . base64_encode($config['appId'] . ':' . $config['certId']);
+        $endpoint = "https://api.ebay.com/identity/v1/oauth2/token";
+        $client = new \GuzzleHttp\Client(['headers' =>
+            ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => $authorizationEncoded]]);
+
+        $response = $client->request('POST', $endpoint, [ 'form_params' => [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $account[0]->refresh_token,
+
+        ]]);
+
+        $result = json_decode($response->getBody(), true);
+
+        DB::table('db_name')
+            ->where('id', $account[0]->id)
+            ->update(['auth_code' => $account[0]->auth_code,
+                'token_code' => $result['access_token'],
+                'expires_in' => $result['expires_in']]);
+
+        $notification = array(
+            'message' => 'Token refreshed successfully!',
+            'alert-type' => 'success'
+        );
+
+
+        return back()->with($notification)->with('success', 'Token refreshed successfully !');
+
+    }
+
 
 
     public function importList()

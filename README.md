@@ -27,6 +27,8 @@ Here is the steps to get access to list of ebay account
 5. Last just call the function import 
   a. by passing the token code given by ebay 
   b. here is your active listing 
+ 
+6. added a function to update the token of selected user updateToken() if the existant token got expired 
   
   
   

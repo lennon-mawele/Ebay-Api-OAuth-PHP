@@ -89,6 +89,42 @@ public function updateToken(Request $request)
         return back()->with($notification)->with('success', 'Token refreshed successfully !');
 
     }
+    
+    
+     private function getImagesProduct($itemId, $token)
+    {
+
+        $request = '<?xml version="1.0" encoding="utf-8"?>
+                    <GetSingleItemRequest xmlns="urn:ebay:apis:eBLBaseComponents" >
+                    <ItemID>' . $itemId . '</ItemID>
+                    <IncludeSelector>Details</IncludeSelector>
+                    </GetSingleItemRequest>';
+
+        $callName = 'GetSingleItem';
+        $compatibilityLevel = 863;
+        $endpoint = "http://open.api.ebay.com/shopping";
+        $headers[] = "X-EBAY-API-CALL-NAME: $callName";
+        $headers[] = "X-EBAY-API-IAF-TOKEN: " . $token;
+        $headers[] = "X-EBAY-API-VERSION: $compatibilityLevel";
+        $headers[] = "X-EBAY-API-REQUEST-ENCODING: XML";
+        $headers[] = "X-EBAY-API-RESPONSE-ENCODING: XML";
+        $headers[] = "X-EBAY-API-SITE-ID: 0";
+        $headers[] = "Content-Type: text/xml";
+
+        $curl = curl_init($endpoint);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
+
+        $response2 = curl_exec($curl);
+        $data = simplexml_load_string($response2);
+
+
+        return $data;
+    }
 
 
 

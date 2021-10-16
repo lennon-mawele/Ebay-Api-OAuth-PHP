@@ -29,6 +29,7 @@ Here is the steps to get access to list of ebay account
   b. here is your active listing 
  
 6. added a function to update the token of selected user updateToken() if the existant token got expired 
+7. Get images for each product using the item ID will return an XML with images bigger size then getMySellingEbay function called getImagesProduct()
   
   
   
